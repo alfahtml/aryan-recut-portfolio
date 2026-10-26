@@ -1,0 +1,73 @@
+
+<script>
+  document.getElementById("year").textContent =
+    new Date().getFullYear();
+
+  // Portfolio project filters
+  const filterButtons = document.querySelectorAll(".filter-btn");
+  const projectCards = document.querySelectorAll(".project-card");
+  const emptyProjects = document.getElementById("emptyProjects");
+
+  filterButtons.forEach(function(button) {
+    button.addEventListener("click", function() {
+      const selected = button.dataset.filter;
+      let count = 0;
+
+      filterButtons.forEach(function(item) {
+        item.classList.toggle("active", item === button);
+      });
+
+      projectCards.forEach(function(card) {
+        const matches =
+          selected === "all" ||
+          card.dataset.category === selected;
+
+        card.hidden = !matches;
+        if (matches) count++;
+      });
+
+      emptyProjects.hidden = count !== 0;
+    });
+  });
+
+  // Gmail contact form
+  document.getElementById("contactForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const form = event.currentTarget;
+    if (!form.reportValidity()) return;
+
+    function get(id) {
+      const field = document.getElementById(id);
+      return field && field.value.trim()
+        ? field.value.trim()
+        : "Not provided";
+    }
+
+    const subject = "Video Editing Inquiry - " + get("clientName");
+
+    const message =
+      "Hello Aryan,\n\n" +
+      "I would like to discuss a video editing project.\n\n" +
+      "CLIENT DETAILS\n" +
+      "Name: " + get("clientName") + "\n" +
+      "Email: " + get("clientEmail") + "\n\n" +
+      "PROJECT DETAILS\n" +
+      "Project type: " + get("projectType") + "\n" +
+      "Budget: " + get("budget") + "\n" +
+      "Deadline: " + get("deadline") + "\n" +
+      "Video length: " + get("videoLength") + "\n" +
+      "Reference link: " + get("reference") + "\n\n" +
+      "Project description:\n" + get("projectDetails") +
+      "\n\nThank you.";
+
+    const gmailURL =
+      "https://mail.google.com/mail/?view=cm&fs=1" +
+      "&to=bishtaryan333%40gmail.com" +
+      "&su=" + encodeURIComponent(subject) +
+      "&body=" + encodeURIComponent(message);
+
+    // Navigate directly to Gmail in the current tab.
+    window.location.href = gmailURL;
+  });
+</script>
